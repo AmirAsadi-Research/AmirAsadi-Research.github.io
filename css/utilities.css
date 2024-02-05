@@ -35,6 +35,9 @@ a.icon-link:hover {
   position: fixed;
   top: 0;
   left: 0;
+  background-color: #f8f9fa; /* Light background color for light themes; adjust as needed */
+  z-index: 1000; /* Ensures navbar is above other content */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds subtle shadow for depth */
 }
 
 .nav-title-link {
