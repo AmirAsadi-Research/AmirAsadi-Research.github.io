@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Office with Pomodoro Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .office {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            margin: 20px 0;
+        }
+        .desk {
+            width: 120px;
+            height: 120px;
+            background-color: #ffffff;
+            border: 2px solid #cccccc;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+            position: relative;
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            border-radius: 50%;
+            margin-bottom: 5px;
+        }
+        .name, .task {
+            position: absolute;
+            top: -20px;
+            background-color: #fff;
+            padding: 2px 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .task {
+            top: 100px;
+        }
+        .pomodoro-timer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #timer {
+            font-size: 2em;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="welcome">
+    <h1>Welcome to the Virtual Office</h1>
+    <input type="text" id="username" placeholder="Enter your name">
+    <input type="text" id="task" placeholder="What are you working on?">
+    <button onclick="joinOffice()">Join Office</button>
+</div>
+
+<div id="office-container" style="display:none;">
+    <div class="pomodoro-timer">
+        <div id="timer">25:00</div>
+        <button onclick="startTimer()">Start</button>
+        <button onclick="resetTimer()">Reset</button>
+    </div>
+    <div class="office" id="office"></div>
+</div>
+
+<script>
+    let timer;
+    let timeLeft = 1500;
+
+    function joinOffice() {
+        const username = document.getElementById('username').value;
+        const task = document.getElementById('task').value;
+
+        if (username.trim() === "") {
+            alert("Please enter your name.");
+            return;
+        }
+
+        document.getElementById('welcome').style.display = 'none';
+        document.getElementById('office-container').style.display = 'block';
+
+        const office = document.getElementById('office');
+        const desk = document.createElement('div');
+        desk.className = 'desk';
+
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+
+        const nameTag = document.createElement('div');
+        nameTag.className = 'name';
+        nameTag.textContent = username;
+
+        const taskTag = document.createElement('div');
+        taskTag.className = 'task';
+        taskTag.textContent = task;
+
+        desk.appendChild(avatar);
+        desk.appendChild(nameTag);
+        desk.appendChild(taskTag);
+        office.appendChild(desk);
+    }
+
+    function startTimer() {
+        clearInterval(timer);
+        timer = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                alert("Time's up!");
+                return;
+            }
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }, 1000);
+    }
+
+    function resetTimer() {
+        clearInterval(timer);
+        timeLeft = 1500;
+        document.getElementById('timer').textContent = '25:00';
+    }
+</script>
+
+</body>
+</html>
